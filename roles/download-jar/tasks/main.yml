@@ -1,0 +1,38 @@
+---
+# Installa i seguenti pacchetti usando `apt-get`: `openjdk-17-jre`
+- name: Install Minecraft dependencies
+  apt:
+    name:
+      - openjdk-17-jre
+
+# Creare le cartelle backup, server nella home
+- name: Create folders
+  file:
+    path: "{{ users[0].home }}/{{ item }}"
+    state: directory
+    owner: "{{ users[0].username }}"
+    mode: 0755
+  with_items:
+    - server
+    - backup
+    - tools
+
+# Copiare script per eseguire backup
+- name: Add script to do server
+  template:
+    src: templates/backup.sh
+    dest: "{{ users[0].home }}/tools/backup.sh"
+    owner: "{{ users[0].username }}"
+    mode: u=rwx,g=r,o=r
+
+
+- name: Add cronjob for backups
+  cron:
+    name: "Do backup"
+    user: "{{ users[0].username }}"
+    minute: "0"
+    hour: "23"
+    day: "*"
+    month: "*"
+    weekday: "*"
+    job: "{{ users[0].home }}/tools/backup.sh"

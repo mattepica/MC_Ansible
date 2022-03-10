@@ -1,0 +1,7 @@
+users:
+  - username: mine
+    name: Minecraft
+    home: /opt/mine
+
+
+mc_pwd : Test

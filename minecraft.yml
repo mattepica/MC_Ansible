@@ -1,0 +1,9 @@
+---
+- name: Deploy minecraft server
+  hosts: servers
+
+  roles:
+    - role:  singleplatform-eng.users
+      become: yes
+    - role: download-jar
+      become: yes
