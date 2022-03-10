@@ -11,6 +11,7 @@
     path: "{{ users[0].home }}/{{ item }}"
     state: directory
     owner: "{{ users[0].username }}"
+    group: "{{ users[0].username }}"
     mode: 0755
   with_items:
     - server
@@ -23,9 +24,10 @@
     src: templates/backup.sh
     dest: "{{ users[0].home }}/tools/backup.sh"
     owner: "{{ users[0].username }}"
+    group: "{{ users[0].username }}"
     mode: u=rwx,g=r,o=r
 
-
+# setto il cronjob
 - name: Add cronjob for backups
   cron:
     name: "Do backup"
@@ -36,3 +38,12 @@
     month: "*"
     weekday: "*"
     job: "{{ users[0].home }}/tools/backup.sh"
+
+#copio il file eula.txt
+
+- name: copy EULA file from local host to remote host
+  copy:
+    owner: "{{ users[0].username }}"
+    group: "{{ users[0].username }}"
+    src: files/eula.txt
+    dest: "{{ users[0].home }}/server/eula.txt"

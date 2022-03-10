@@ -5,5 +5,5 @@
   roles:
     - role:  singleplatform-eng.users
       become: yes
-    - role: download-jar
+    - role: env-setup
       become: yes
