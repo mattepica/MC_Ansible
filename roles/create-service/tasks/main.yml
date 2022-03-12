@@ -1,0 +1,17 @@
+---
+- name: Add service for minecraft
+  template:
+    src: templates/service.service
+    dest: "/etc/systemd/system/{{ username }}.service"
+    mode: u=rwx,g=r,o=r
+
+
+- name: Just force systemd to reread configs
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: Make sure a service unit is running
+  ansible.builtin.systemd:
+    state: started
+    enabled: yes
+    name: "{{ username }}.service"

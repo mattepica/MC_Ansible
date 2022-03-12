@@ -1,0 +1,20 @@
+[Unit]
+Description=Minecraft Server by {{ username }}
+After=network.target
+
+[Service]
+User={{ username }}
+Nice=1
+KillMode=none
+SuccessExitStatus=0 1
+ProtectHome=true
+ProtectSystem=full
+PrivateDevices=true
+NoNewPrivileges=true
+WorkingDirectory={{ dir }}/server
+ExecStart=/usr/bin/java -Xmx{{ xmx }} -Xms{{ xms }} -jar server.jar nogui
+ExecStop={{ rcon_exe }} -H 127.0.0.1 -P {{ mcc_port }} -p {{ mcc_pwd }} stop
+
+Restart=always
+[Install]
+WantedBy=multi-user.target
