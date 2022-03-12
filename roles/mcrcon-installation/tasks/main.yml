@@ -1,0 +1,11 @@
+---
+- name: Crea directory per mcrcon
+  file:
+    path : "{{ rcon_path }}"
+    state: directory
+
+- name: copy mcrcon exe
+  copy:
+    src: files/mcrcon
+    dest: "{{ rcon_path }}/mcrcon"
+    mode: u=rwx,g=rwx,o=rwx
