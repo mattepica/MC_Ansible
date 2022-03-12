@@ -11,7 +11,7 @@ ProtectHome=true
 ProtectSystem=full
 PrivateDevices=true
 NoNewPrivileges=true
-WorkingDirectory={{ dir }}/server
+WorkingDirectory={{ dir }}server
 ExecStart=/usr/bin/java -Xmx{{ xmx }} -Xms{{ xms }} -jar server.jar nogui
 ExecStop={{ rcon_exe }} -H 127.0.0.1 -P {{ mcc_port }} -p {{ mcc_pwd }} stop
 

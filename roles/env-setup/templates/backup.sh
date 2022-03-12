@@ -7,9 +7,9 @@
  FILENAME="server-"$(date +%F-%H-%M)".tar.gz"
  rcon "save-off"
  rcon "save-all"
- tar -cvpzf {{ dir }}/backups/$FILENAME {{ dir }}/server
+ tar -cvpzf {{ dir }}backups/$FILENAME {{ dir }}server
  rcon "save-on"
 
  ## Delete older backups
- find {{ dir }}/backups/ -type f -mtime +7 -name '*.gz' -delete
- echo $FILENAME > {{ dir }}/backups/lastFile.dat
+ find {{ dir }}backups/ -type f -mtime +7 -name '*.gz' -delete
+ echo $FILENAME > {{ dir }}backups/lastFile.dat

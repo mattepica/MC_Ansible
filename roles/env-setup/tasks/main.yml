@@ -8,9 +8,10 @@
 - name: create user
   user:
     name: "{{ username }}"
-    groups: "{{ group }}"
+    group: "{{ group }}"
     home: "{{ dir }}"
-    append: yes
+    shell: "/bin/bash"
+    append: no
     state: present
     create_home: yes
 
@@ -24,21 +25,21 @@
 # Creare le cartelle backup, server nella home
 - name: Create folders
   file:
-    path: "{{ dir }}/{{ item }}"
+    path: "{{ dir }}{{ item }}"
     state: directory
     owner: "{{ username }}"
     group: "{{ username }}"
     mode: 0755
   with_items:
     - server
-    - backup
+    - backups
     - tools
 
 # Copiare script per eseguire backup
 - name: Add script to do server
   template:
     src: templates/backup.sh
-    dest: "{{ dir }}/tools/backup.sh"
+    dest: "{{ dir }}tools/backup.sh"
     owner: "{{ username }}"
     group: "{{ username }}"
     mode: u=rwx,g=r,o=r
@@ -53,7 +54,7 @@
     day: "*"
     month: "*"
     weekday: "*"
-    job: "{{ dir }}/tools/backup.sh"
+    job: "{{ dir }}tools/backup.sh"
 
 #copio il file eula.txt
 
@@ -62,7 +63,7 @@
     owner: "{{ username }}"
     group: "{{ username }}"
     src: files/eula.txt
-    dest: "{{ dir }}/server/eula.txt"
+    dest: "{{ dir }}server/eula.txt"
 
 
 
@@ -73,14 +74,14 @@
     owner: "{{ username }}"
     group: "{{ username }}"
     src: files/server.jar
-    dest: "{{ dir }}/server/server.jar"
+    dest: "{{ dir }}server/server.jar"
 
 
 # Copiare script template
 - name: Add template prop
   template:
     src: templates/server.properties
-    dest: "{{ dir }}/server/server.properties"
+    dest: "{{ dir }}server/server.properties"
     owner: "{{ username }}"
     group: "{{ username }}"
     mode: u=rwx,g=r,o=r

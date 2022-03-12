@@ -1,6 +1,6 @@
-username: sv2
+username: sv4
 group: "{{ username }}"
-dir: "/opt/{{ username }}"
+dir: "/opt/{{ username }}/"
 
 mc_port : 25566
 
