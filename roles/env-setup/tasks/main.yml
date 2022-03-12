@@ -1,4 +1,20 @@
 ---
+
+- name: create group
+  group:
+    name: "{{ group }}"
+    state: present
+
+- name: create user
+  user:
+    name: "{{ username }}"
+    groups: "{{ group }}"
+    home: "{{ dir }}"
+    append: yes
+    state: present
+    create_home: yes
+
+
 # Installa i seguenti pacchetti usando `apt-get`: `openjdk-17-jre`
 - name: Install Minecraft dependencies
   apt:
@@ -8,10 +24,10 @@
 # Creare le cartelle backup, server nella home
 - name: Create folders
   file:
-    path: "{{ users[0].home }}/{{ item }}"
+    path: "{{ dir }}/{{ item }}"
     state: directory
-    owner: "{{ users[0].username }}"
-    group: "{{ users[0].username }}"
+    owner: "{{ username }}"
+    group: "{{ username }}"
     mode: 0755
   with_items:
     - server
@@ -22,28 +38,49 @@
 - name: Add script to do server
   template:
     src: templates/backup.sh
-    dest: "{{ users[0].home }}/tools/backup.sh"
-    owner: "{{ users[0].username }}"
-    group: "{{ users[0].username }}"
+    dest: "{{ dir }}/tools/backup.sh"
+    owner: "{{ username }}"
+    group: "{{ username }}"
     mode: u=rwx,g=r,o=r
 
 # setto il cronjob
 - name: Add cronjob for backups
   cron:
     name: "Do backup"
-    user: "{{ users[0].username }}"
+    user: "{{ username }}"
     minute: "0"
     hour: "23"
     day: "*"
     month: "*"
     weekday: "*"
-    job: "{{ users[0].home }}/tools/backup.sh"
+    job: "{{ dir }}/tools/backup.sh"
 
 #copio il file eula.txt
 
 - name: copy EULA file from local host to remote host
   copy:
-    owner: "{{ users[0].username }}"
-    group: "{{ users[0].username }}"
+    owner: "{{ username }}"
+    group: "{{ username }}"
     src: files/eula.txt
-    dest: "{{ users[0].home }}/server/eula.txt"
+    dest: "{{ dir }}/server/eula.txt"
+
+
+
+#copio il server.jar
+
+- name: copy SERVER.JAR file from local host to remote host
+  copy:
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    src: files/server.jar
+    dest: "{{ dir }}/server/server.jar"
+
+
+# Copiare script template
+- name: Add template prop
+  template:
+    src: templates/server.properties
+    dest: "{{ dir }}/server/server.properties"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: u=rwx,g=r,o=r
