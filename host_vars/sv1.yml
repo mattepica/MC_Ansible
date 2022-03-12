@@ -1,7 +1,15 @@
-users:
-  - username: mine
-    name: Minecraft
-    home: /opt/mine
+username: sv2
+group: "{{ username }}"
+dir: "/opt/{{ username }}"
 
+mc_port : 25566
 
-mc_pwd : Test
+mcc_pwd : "pwd_{{ username }}"
+mcc_port : 25576
+
+xmx : 1024M
+xms : 512M
+
+rcon_path : /opt/shared/mcrcon/
+
+rcon_exe : /opt/shared/mcrcon/mcrcon
