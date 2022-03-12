@@ -3,7 +3,9 @@
   hosts: servers
 
   roles:
-    - role:  singleplatform-eng.users
-      become: yes
     - role: env-setup
+      become: yes
+    - role: mcrcon-installation
+      become: yes
+    - role: create-service
       become: yes
